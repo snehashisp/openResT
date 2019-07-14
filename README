@@ -1,0 +1,12 @@
+A Framework for REST based api Testing with JSON schema based validation. 
+
+    Implemented Features: 
+            1. Creating tests in JSON
+            2. Organizing tests into domain
+            3. Running domains and tests within.
+                    3.1 Running tests once synchronously
+                    3.2 Running tests multiple times (for stress testing API) asynchronously.
+            4. Checking for status errors
+            5. Validating using JSON schema
+            6. Calulating response times
+            6. Error logging in csv.

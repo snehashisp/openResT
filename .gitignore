@@ -2,4 +2,6 @@ stats
 *.csv
 *.pyc
 *.log
-
+**/TESTS
+*.ipynb
+**/.ipynb_checkpoints
