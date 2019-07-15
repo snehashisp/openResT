@@ -109,7 +109,7 @@ class ApiTestExecutor:
         if true_dependencies and not self._check_true_dependencies(true_dependencies, stats):
             return self._response_creator(test, [(Response.TRUE_DEPENDENCY_UNSATISFIED, Response.get_response_msg(Response.TRUE_DEPENDENCY_UNSATISFIED), None)])
 
-        false_dependencies = options.get('false_dependencies', None)
+        false_dependencies = options.get('false_dependency', None)
         if false_dependencies and not self._check_false_dependencies(false_dependencies, stats):
             return self._response_creator(test, [(Response.FALSE_DEPENDENCY_UNSATISFIED, Response.get_response_msg(Response.FALSE_DEPENDENCY_UNSATISFIED), None)])
 
