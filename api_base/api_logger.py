@@ -36,6 +36,12 @@ class ApiLogs:
         self.executor = api_executor.ApiTestExecutor()
         self.debug = debug
 
+    def send_error_info(self, response):
+
+        response_type_map = response.aggregate_type()
+        if api_utils.Response.INCORRECT_RESPONSE_ERROR in response_type_map or api_utils.Response.STATUS_ERROR in response_type_map:
+            response.test.report_error_sns(str(response.response_dict()))
+
     def update_stats_and_log(self, responses, log_file_pointer):
 
         for response in responses:
@@ -47,6 +53,7 @@ class ApiLogs:
             failures = response_type_map.get(api_utils.Response.INCORRECT_RESPONSE_ERROR, 0) + response_type_map.get(api_utils.Response.STATUS_ERROR, 0)
             self.stats.increment_failure(response.test.domain_name, response.test.test_name, failures)
             log_file_pointer.write(str(datetime.utcnow()) + "," + log_entry + "\n")
+            self.send_error_info(response)
 
     def run_domains(self, log_file = "default_log_file.csv"):
 

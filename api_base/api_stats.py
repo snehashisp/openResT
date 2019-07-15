@@ -20,13 +20,13 @@ class ApiStats:
 		}
 
 	def get_test_time(self, domain_name, test_name):
-		return test_stats.get(domain_name, {}).get(test_name, {}).get('last_executed_time', None)
+		return self.test_stats.get(domain_name, {}).get(test_name, {}).get('last_executed_time', None)
 
 	def get_test_success_count(self, domain_name, test_name):
-		return test_stats.get(domain_name, {}).get(test_name, {}).get('successfull_runs', 0)
+		return self.test_stats.get(domain_name, {}).get(test_name, {}).get('successfull_runs', 0)
 
 	def get_test_failure_count(self, domain_name, test_name):
-		return test_stats.get(domain_name, {}).get(test_name, {}).get('failure_runs', 0)
+		return self.test_stats.get(domain_name, {}).get(test_name, {}).get('failure_runs', 0)
 
 	def increment_success(self, domain_name, test_name, increment_amount = 1):
 		test_stats = self.test_stats.setdefault(domain_name, {})

@@ -24,17 +24,17 @@ class ApiTestExecutor:
         response = await test.execute_request_async(session, test_number)
         correct_response = test.test_map.get('correct_response', None)
         json_resp = await response.json()
-        error_msg = Response.get_response_msg(Response.SUCCESS)
+        response_type_msg = Response.get_response_msg(Response.SUCCESS)
         response_type = Response.SUCCESS
         if response.status != 200:
-            error_msg = Response.get_response_msg(Response.STATUS_ERROR, str(response.status))
+            response_type_msg = Response.get_response_msg(Response.STATUS_ERROR, str(response.status))
             response_type = Response.STATUS_ERROR
         elif correct_response:
             valid, error = test.validate_respone(json_resp)
             if not valid:
-                error_msg = Response.get_response_msg(Response.INCORRECT_RESPONSE_ERROR, error)
+                response_type_msg = Response.get_response_msg(Response.INCORRECT_RESPONSE_ERROR, error)
                 response_type = Response.INCORRECT_RESPONSE_ERROR
-        return (response_type, error_msg, json_resp)
+        return (response_type, response_type_msg, json_resp)
 
     async def _request_executer(self, test):
 
@@ -103,15 +103,15 @@ class ApiTestExecutor:
         options = test.test_map.get('options',{})
         if options.get('repeat', True) is False:
             if stats.get_test_success_count(test.domain_name, test.test_name) > 0:
-                return self._response_creator(test, [Response.NO_REPEAT, Response.get_response_msg(Response.NO_REPEAT), None])
+                return self._response_creator(test, [(Response.NO_REPEAT, Response.get_response_msg(Response.NO_REPEAT), None)])
 
         true_dependencies = options.get('true_dependency', None)
         if true_dependencies and not self._check_true_dependencies(true_dependencies, stats):
-            return self._response_creator(test, Response.TRUE_DEPENDENCY_UNSATISFIED, Response.get_response_msg(Response.TRUE_DEPENDENCY_UNSATISFIED), None)
+            return self._response_creator(test, [(Response.TRUE_DEPENDENCY_UNSATISFIED, Response.get_response_msg(Response.TRUE_DEPENDENCY_UNSATISFIED), None)])
 
         false_dependencies = options.get('false_dependencies', None)
         if false_dependencies and not self._check_false_dependencies(false_dependencies, stats):
-            return self._response_creator(test, Response.FALSE_DEPENDENCY_UNSATISFIED, Response.get_response_msg(Response.FALSE_DEPENDENCY_UNSATISFIED), None)
+            return self._response_creator(test, [(Response.FALSE_DEPENDENCY_UNSATISFIED, Response.get_response_msg(Response.FALSE_DEPENDENCY_UNSATISFIED), None)])
 
         responses = await self._request_executer(test)
         return self._response_creator(test, responses)
@@ -131,7 +131,8 @@ class ApiTestExecutor:
                     responses.append(asyncio.run(self._execute_test(test, stats)))
             return responses
         except Exception as e:
-            return []
+            raise e
+
             
 
 

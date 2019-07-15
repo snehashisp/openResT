@@ -2,6 +2,7 @@ from api_base import api_test
 import copy
 import numpy as np
 import math
+from ast import literal_eval
 
 from api_base.api_utils import Response
 
@@ -34,10 +35,10 @@ class ApiTestResponse:
         errors = set()
         for resp_index, resp in enumerate(self.response_type):
             if resp == Response.STATUS_ERROR:
-                errors.add("(" + self.response_type_msg[resp_index] + ")")
+                errors.add("(" + str(self.response_type_msg[resp_index]) + ")")
             elif resp == Response.INCORRECT_RESPONSE_ERROR:
-                errors.add("(" + self.response_type_msg[resp_index] + ". Response Body:" + str(self.response_body[resp_index]) + ")")
-        return errors
+                errors.add("(" + str(self.response_type_msg[resp_index]) + ". Response Body:" + str(self.response_body[resp_index]) + ")")
+        return list(errors)
 
     def get_elapsed_time_stats(self):
         
@@ -57,7 +58,8 @@ class ApiTestResponse:
         log_dict["response_status"] = self.response_type_msg[0]
         if self.response_type[0] == Response.INCORRECT_RESPONSE_ERROR:
             log_dict["response_body"] = self.response_body[0]
-        log_dict["response_times"] = self.elapsed_times[0]
+        if self.response_type[0] in [Response.INCORRECT_RESPONSE_ERROR, Response.SUCCESS, Response.STATUS_ERROR]:
+            log_dict["response_times"] = self.elapsed_times[0]
         return log_dict
 
     def _get_multi_response_log(self):
@@ -73,8 +75,15 @@ class ApiTestResponse:
         if errors != []:
             log_dict["response_body"] = str(errors).translate({44:""})
         times = self.get_elapsed_time_stats()
-        log_dict["response_times"] = "average_time: {avg}. standard_deviation: {std}. average_high: {avg_high}.".format(**times)
+        if self.response_type[0] in [Response.INCORRECT_RESPONSE_ERROR, Response.SUCCESS, Response.STATUS_ERROR]:
+            log_dict["response_times"] = "average_time: {avg}. standard_deviation: {std}. average_high: {avg_high}.".format(**times)
         return log_dict
+
+    def response_dict(self):
+        if self.test.test_type == api_test.TestType.SINGLE_TEST:
+            return self._get_single_response_log()
+        else:
+            return self._get_multi_response_log()
 
     def log_entry(self):
 

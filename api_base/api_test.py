@@ -60,7 +60,7 @@ class TestType:
         "test_type" : SINGLE_TEST,
         "response_status" : "",
         "response_body" : "",
-        "response_times" : ""
+        "response_times" : None
     }
 
 
