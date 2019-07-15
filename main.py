@@ -1,4 +1,4 @@
-import api_logger
+from api_base import api_logger
 
 default_config = "./config.json"
 api_log = api_logger.ApiLogs(default_config, debug = True)
