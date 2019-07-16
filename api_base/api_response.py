@@ -32,13 +32,13 @@ class ApiTestResponse:
         return self.type_map
 
     def get_errors(self):
-        errors = set()
+        errors = []
+        errorTypes = set()
         for resp_index, resp in enumerate(self.response_type):
-            if resp == Response.STATUS_ERROR:
-                errors.add("(" + str(self.response_type_msg[resp_index]) + ")")
-            elif resp == Response.INCORRECT_RESPONSE_ERROR:
-                errors.add("(" + str(self.response_type_msg[resp_index]) + ". Response Body:" + str(self.response_body[resp_index]) + ")")
-        return list(errors)
+            if (resp == Response.STATUS_ERROR or resp == Response.INCORRECT_RESPONSE_ERROR) and self.response_type_msg[resp_index] not in errorTypes:
+                errorTypes.add(self.response_type_msg[resp_index])
+                errors.append("(" + str(self.response_type_msg[resp_index]) + ". Response Body:" + str(self.response_body[resp_index]) + ")")
+        return errors
 
     def get_elapsed_time_stats(self):
         

@@ -45,15 +45,19 @@ class ApiLogs:
     def update_stats_and_log(self, responses, log_file_pointer):
 
         for response in responses:
-            log_entry = response.log_entry()
-            if self.debug:
-                print(log_entry)
-            response_type_map = response.aggregate_type()
-            self.stats.increment_success(response.test.domain_name, response.test.test_name, response_type_map.get(api_utils.Response.SUCCESS, 0))
-            failures = response_type_map.get(api_utils.Response.INCORRECT_RESPONSE_ERROR, 0) + response_type_map.get(api_utils.Response.STATUS_ERROR, 0)
-            self.stats.increment_failure(response.test.domain_name, response.test.test_name, failures)
-            log_file_pointer.write(str(datetime.utcnow()) + "," + log_entry + "\n")
-            self.send_error_info(response)
+            if response:
+                try:
+                    log_entry = response.log_entry()
+                    if self.debug:
+                        print(log_entry)
+                    response_type_map = response.aggregate_type()
+                    self.stats.increment_success(response.test.domain_name, response.test.test_name, response_type_map.get(api_utils.Response.SUCCESS, 0))
+                    failures = response_type_map.get(api_utils.Response.INCORRECT_RESPONSE_ERROR, 0) + response_type_map.get(api_utils.Response.STATUS_ERROR, 0)
+                    self.stats.increment_failure(response.test.domain_name, response.test.test_name, failures)
+                    log_file_pointer.write(str(datetime.utcnow()) + "," + log_entry + "\n")
+                    self.send_error_info(response)
+                except Exception as e:
+                    print(e)
 
     def run_domains(self, log_file = "default_log_file.csv"):
 

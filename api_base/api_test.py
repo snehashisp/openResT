@@ -24,11 +24,11 @@ Each tests in json files have the format as ...
         
         "activated": true or false // this test activated to be run periodically (if the tests are scheduled to executed periodically)
         
-        "data": {} //data of the API request in json format (test map)
+        (optional)"data": {} //data of the API request in json format (test map)
 
         (optional) "correct_response": { $schema } // a json schema on which the response will be validated
 
-        "sns": {
+        (optional)"sns": {
             "region_code": "",
             "arn": "" 
             // the AWS SNS arn of the notification group to which an error notification (if generated) will be sent
@@ -86,8 +86,9 @@ class ApiTest:
             "number": test_number
         }
         headers = self.test_map.get('headers', None)
-        return await session.request(self.test_map['method'], self.test_map['url'], headers = headers, json = self.test_map['data'],
-                                     trace_request_ctx = context, timeout = None)
+        data = self.test_map.get('data', None)
+        return await session.request(self.test_map['method'], self.test_map['url'], headers = headers, json = data,
+                                     trace_request_ctx = context)
 
     def validate_respone(self, response):
         try:
@@ -99,8 +100,9 @@ class ApiTest:
             return False, "Schema Error : Schema Path: " + " -> ".join(e.absolute_schema_path) + " Error: " + e.message 
 
     def report_error_sns(self, error_msg):
-        client = boto3.client('sns', region_name = self.test_map['sns']['region_code'])
-        client.publish(TopicArn = self.test_map['sns']['arn'], Message = error_msg)
+        if self.test_map.get('sns', {}).get('region_code', None) and self.test_map.get('sns', {}).get('arn', None):
+            client = boto3.client('sns', region_name = self.test_map['sns']['region_code'])
+            client.publish(TopicArn = self.test_map['sns']['arn'], Message = error_msg)
 
 
 

@@ -100,6 +100,9 @@ class ApiTestExecutor:
 
     async def _execute_test(self, test, stats):
 
+        if test.test_map.get('activated', True) is False:
+            return None
+
         options = test.test_map.get('options',{})
         if options.get('repeat', True) is False:
             if stats.get_test_success_count(test.domain_name, test.test_name) > 0:
