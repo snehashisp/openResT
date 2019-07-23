@@ -3,6 +3,7 @@ from api_base import api_stats
 from api_base import api_response
 import aiohttp
 import asyncio
+import json
 from api_base.api_utils import Response, ElapsedTimeTracer
 
 
@@ -23,7 +24,8 @@ class ApiTestExecutor:
 
         response = await test.execute_request_async(session, test_number)
         correct_response = test.test_map.get('correct_response', None)
-        json_resp = await response.json()
+        resp = await response.read()
+        json_resp = json.loads(resp)
         response_type_msg = Response.get_response_msg(Response.SUCCESS)
         response_type = Response.SUCCESS
         if response.status != 200:
