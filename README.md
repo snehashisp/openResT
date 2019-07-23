@@ -129,7 +129,7 @@ Each tests in json files have the format as ...
 <li> activated: wheather this test will be executed this </li>
 <li> data: data of the API request in json format (optional for GET requests) </li>
 <li> correct_response: a json schema on which the response will be validated (optional) </li>
-<li> sns: he AWS SNS arn of the notification group to which an error notification (if generated) will be sent (optional) </li>
+<li> sns: the AWS SNS arn of the notification group to which an error notification (if generated) will be sent (optional) </li>
 <li> options: optional parameters that define the test execution. 
     <ul>
     <li> repeat:true/false, whether the test can be executed more than once </li>
