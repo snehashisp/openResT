@@ -8,15 +8,13 @@ import copy
 from api_base.api_utils import Response
 
 """
-Testing the various moengage api.
-
 Tests are present as JSON files called domains. 
 The api domain of each test is by default the name of the file in which it is present. 
 
 Each tests in json files have the format as ...
 {
     "testname": { // the name of the test
-        "url": ""  // string representing url of the request
+        "url": ""  // string representing url of the request5
         
         "method": "" // GET or POST
 

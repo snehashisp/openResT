@@ -40,7 +40,7 @@ class ApiLogs:
 
         response_type_map = response.aggregate_type()
         if api_utils.Response.INCORRECT_RESPONSE_ERROR in response_type_map or api_utils.Response.STATUS_ERROR in response_type_map:
-            response.test.report_error_sns(str(response.response_dict()))
+            response.test.report_error_sns(json.dumps(response.response_dict(), indent = 8))
 
     def update_stats_and_log(self, responses, log_file_pointer):
 
