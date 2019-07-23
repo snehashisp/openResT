@@ -3,7 +3,7 @@ import json
 import copy
 
 """
-API domain are a set of logically similar API tests. They may not all be call to the 
+API domain are a set of logically similar API tests. They may not all be calls to the 
 same web domain. API domains house the tests (structure in api_test file) that will be executed.
 {
 	"defaults": {

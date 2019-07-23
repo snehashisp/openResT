@@ -86,7 +86,7 @@ then the merged test will have the data attribute as
 "data" : {
     "payload": {
         "WEB": "xyz",
-        "redirect":, "abc.com"
+        "redirect":"abc.com"
     },
     "retry": true
 }
@@ -136,6 +136,7 @@ Each tests in json files have the format as ...
     <li> true_dependency: list of true dependencies. True dependencies are those tests that must have successfully run at least once for this test to run. True dependencies are specified under the options key in the following format in the test structure. Note that the dependent test must exist and have its domain amongst the given domains in the config file otherwise this function will always return false. </li>
     <li> false_dependency: list of false dependencies. Similar to true dependencies false dependencies are satisfied if all of the tests listed have failed at least once. Note that only failures are considered. Tests that have not yet run are not designated as failures.</li>
     <li>number_of_runs: the number of times this test will be executed, the tests are asynchronous</li>
+    </ul>
 </li>
 </ul>
 
@@ -147,7 +148,7 @@ True Dependency format, (similar for false dependencies)
             "domain_name":"...",
             "test_name":"..."
         },
-        ...
+        "..."
     ]
 }
 ```
