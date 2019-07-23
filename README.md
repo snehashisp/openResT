@@ -19,7 +19,7 @@ Core functionalities (Implemented in current version)
     <li> Calculating response times. </li>
     <li> Error logging in csv. </li>
     <li> AWS SNS based error notifications. </li>
-
+</ul>
 <br/>
 Considerations: At current implementation levels openResT is a framework providing the foundation for
 the above functionalities and not a full fledged application or a library. The following sections will 
@@ -37,14 +37,14 @@ same web domain. API domains house the tests (structure in api_test file) that w
 ```json
 {
     "defaults": {
-        ...
+        "..."
     },
     "options": {
-        "async":False 
+        "async":false 
     },
-    "test1": { ... },
-    "test2": { ... },
-    ...
+    "test1": { "..." },
+    "test2": { "..." },
+    "..."
 }
 ```
 It has a "defaults" metadata which contains default parameters that will be applied to all the 
@@ -191,7 +191,7 @@ The api_logger class has the functionality to run tests present in domain and lo
 ```json
 {
     "test_domain_dir": "",
-    "test_domains": ["", "", ...],
+    "test_domains": ["", "", "..."],
     "test_stats":""
 
 }
